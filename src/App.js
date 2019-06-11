@@ -1,26 +1,67 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from "./components/Header";
+import TodoItem from "./components/TodoItem"
+import avengerData from "./components/avengerData.js"
+import Form from "./Form"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      name: "",
+      email: "",
+      isMember: true,
+      gender: "",
+      favAvenger: "",
+      isLoading: true,
+      avengerList: avengerData
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleForm = this.handleForm.bind(this)
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        isLoading: false
+      })
+    }, 1500)
+  }
+
+  handleForm(event) {
+    const {name, value, type, checked} = event.target
+    type === "checkbox" ? this.setState({[name]: checked}) : this.setState({[name]: value})
+  }
+
+  handleChange(id) {
+    this.setState(prevState => {
+      const newData = prevState.avengerList.map(foo => {
+        if(foo.id === id) {
+          foo.completed = !foo.completed
+        }
+        return foo
+      })
+      return {
+        avengerList: newData
+      }
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Form 
+          handleChange={this.handleChange}
+          handleForm={this.handleForm}
+          data={this.state}
+        />
+      </div>
+    )
+  }
+
+  
 }
 
 export default App;
