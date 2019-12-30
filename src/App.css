@@ -57,3 +57,8 @@ body {
     text-align: center;
     padding: 20px 0;
 }
+.todo-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}

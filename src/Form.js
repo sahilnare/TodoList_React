@@ -2,10 +2,16 @@ import React from "react"
 import './App.css';
 import Header from "./components/Header";
 import TodoItem from "./components/TodoItem"
-import avengerData from "./components/avengerData.js"
+import PropTypes from "prop-types"
+import AddTodo from "./components/AddTodo"
 
 function Form(props) {
-	const avengerInfo = props.data.avengerList.map(item => <TodoItem contact={item} key={item.id} handleChange={props.handleChange}/>)
+	const avengerInfo = props.data.avengerList.map(item => <TodoItem 
+			contact={item} 
+			key={item.id} 
+			handleChange={props.handleChange} 
+			delBtn={props.delBtn}
+		/>)
     let tasksLeft = props.data.avengerList.filter(zoo => {
       return !zoo.completed
     })
@@ -81,6 +87,7 @@ function Form(props) {
 	            </select>
 	            <h2>You are a {props.data.gender}</h2>
 	            <h2>Your favourite Avenger is {props.data.favAvenger}</h2>
+				<AddTodo handleAddTodo={props.handleAddTodo} />
 	            {
 	              tasksLeft.length > 0 && 
 	              <p className="message-alert">You have {tasksLeft.length} tasks left!</p>
@@ -92,5 +99,8 @@ function Form(props) {
 	)
 }
 
+Form.propTypes = {
+	data: PropTypes.object.isRequired
+}
 
 export default Form

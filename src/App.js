@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
-import Header from "./components/Header";
-import TodoItem from "./components/TodoItem"
 import avengerData from "./components/avengerData.js"
 import Form from "./Form"
+import uuid from "uuid"
 
 
 class App extends React.Component {
@@ -18,8 +17,7 @@ class App extends React.Component {
       isLoading: true,
       avengerList: avengerData
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleForm = this.handleForm.bind(this)
+    
   }
 
   componentDidMount() {
@@ -30,12 +28,12 @@ class App extends React.Component {
     }, 1500)
   }
 
-  handleForm(event) {
+  handleForm = (event) => {
     const {name, value, type, checked} = event.target
     type === "checkbox" ? this.setState({[name]: checked}) : this.setState({[name]: value})
   }
 
-  handleChange(id) {
+  handleChange = (id) => {
     this.setState(prevState => {
       const newData = prevState.avengerList.map(foo => {
         if(foo.id === id) {
@@ -49,12 +47,37 @@ class App extends React.Component {
     })
   }
 
+  handleAddTodo = (name, url, email) => {
+    const newTodo = {
+      id: uuid.v4(),
+      name: name,
+      url: url,
+      email: email,
+      completed: false
+    }
+    this.setState({
+        avengerList: [...this.state.avengerList, newTodo]
+      })
+  }
+
+  delBtn = (id) => {
+    this.setState(prevState => {
+      const newData = prevState.avengerList.filter(foo => foo.id !== id)
+      return {
+        avengerList: newData
+      }
+    })
+  }
+
   render() {
+    console.log(avengerData)
     return (
       <div className="App">
         <Form 
           handleChange={this.handleChange}
           handleForm={this.handleForm}
+          handleAddTodo={this.handleAddTodo}
+          delBtn={this.delBtn}
           data={this.state}
         />
       </div>
